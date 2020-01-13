@@ -21,10 +21,43 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 		 * DX_MOP constructor.
 		 */
 		public function __construct() {
+			add_action( 'admin_bar_menu', array( $this, 'dx_mop_admin_bar_menu' ), 999 );
 			add_filter( 'the_content', array( $this, 'prepend_content' ) );
 			add_filter( 'the_content', array( $this, 'append_content' ) );
 			add_filter( 'the_content', array( $this, 'append_new_div' ) );
 			add_filter( 'the_content', array( $this, 'add_new_paragraph' ), 9 );
+			add_action( 'profile_update', array( $this, 'dx_mop_profile_update' ) );
+		}
+
+		/**
+		 * Send email to the administrator when user update profile.
+		 *
+		 * @param int $user_id user id.
+		 */
+		public function dx_mop_profile_update( $user_id ) {
+			$admin_email = get_option( 'admin_email' );
+			$user_info   = get_user_by( 'ID', $user_id );
+			$message     = sprintf( __( 'User %s has updated his/her profile.' ), $user_info->display_name );
+			wp_mail(
+				$admin_email,
+				sprintf( __( '%s - Profile updated' ), get_option( 'blogname' ) ),
+				$message
+			);
+		}
+
+		/**
+		 * Add custom element to WP Admin bar.
+		 *
+		 * @param WP_Admin_Bar $wp_admin_bar WP Admin bar.
+		 */
+		public function dx_mop_admin_bar_menu( $wp_admin_bar ) {
+			$wp_admin_bar->add_menu(
+				array(
+					'id'    => 'profile-settings',
+					'title' => 'Profile Settings',
+					'href'  => admin_url( 'profile.php' ),
+				)
+			);
 		}
 
 		/**
