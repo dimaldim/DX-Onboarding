@@ -22,6 +22,7 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 		 */
 		public function __construct() {
 			add_filter( 'the_content', array( $this, 'prepend_content' ) );
+			add_filter( 'the_content', array( $this, 'append_content' ) );
 		}
 
 		/**
@@ -33,6 +34,17 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 		 */
 		public function prepend_content( $content ) {
 			return 'Onboarding Filter: ' . $content;
+		}
+
+		/**
+		 * Append text to the content.
+		 *
+		 * @param string $content the content.
+		 *
+		 * @return string
+		 */
+		public function append_content( $content ) {
+			return $content . ' by Dimitar Dimitrov';
 		}
 	}
 }
