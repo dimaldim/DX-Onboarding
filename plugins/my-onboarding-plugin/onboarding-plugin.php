@@ -60,9 +60,8 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 			$new_div             = '<div style="display: none;">I\'m hidden div</div>';
 			$separate_content    = explode( '<p>', $content );
 			$separate_content[1] = $new_div . $separate_content[1];
-			$new_content         = implode( '<p>', $separate_content );
 
-			return $new_content;
+			return implode( '<p>', $separate_content );
 		}
 
 		/**
