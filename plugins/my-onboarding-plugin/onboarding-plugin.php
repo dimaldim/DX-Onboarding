@@ -24,6 +24,7 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 			add_filter( 'the_content', array( $this, 'prepend_content' ) );
 			add_filter( 'the_content', array( $this, 'append_content' ) );
 			add_filter( 'the_content', array( $this, 'append_new_div' ) );
+			add_filter( 'the_content', array( $this, 'add_new_paragraph' ), 9 );
 		}
 
 		/**
@@ -58,10 +59,21 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 		public function append_new_div( $content ) {
 			$new_div             = '<div style="display: none;">I\'m hidden div</div>';
 			$separate_content    = explode( '<p>', $content );
-			$separate_content[0] = $new_div . $separate_content[0];
+			$separate_content[1] = $new_div . $separate_content[1];
 			$new_content         = implode( '<p>', $separate_content );
 
 			return $new_content;
+		}
+
+		/**
+		 * Add new paragraph to the content.
+		 *
+		 * @param string $content the content.
+		 *
+		 * @return string
+		 */
+		public function add_new_paragraph( $content ) {
+			return '<p>new paragraph</p>' . $content;
 		}
 	}
 }
