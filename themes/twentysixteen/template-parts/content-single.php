@@ -20,6 +20,9 @@
 	<div class="entry-content">
 		<?php
 			the_content();
+		?>
+		<p><img src="<?php echo get_template_directory_uri() . '/dixy.png'; ?>" alt="DiXy image" /></p>
+		<?php
 
 			wp_link_pages(
 				array(
