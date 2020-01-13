@@ -74,7 +74,7 @@ if ( ! function_exists( 'twentysixteen_entry_date' ) ) :
 		$time_string = sprintf(
 			$time_string,
 			esc_attr( get_the_date( 'c' ) ),
-			get_the_date(),
+			get_the_date( 'l, F j, Y' ),
 			esc_attr( get_the_modified_date( 'c' ) ),
 			get_the_modified_date()
 		);
