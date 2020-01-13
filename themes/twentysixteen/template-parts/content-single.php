@@ -13,17 +13,22 @@
 		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 	</header><!-- .entry-header -->
 
-	<?php twentysixteen_excerpt(); ?>
+	<?php
+	if ( 8 === get_the_ID() ) {
+		twentysixteen_excerpt();
+	}
+	?>
 
 	<?php twentysixteen_post_thumbnail(); ?>
 
 	<div class="entry-content">
 		<?php
 			the_content();
-		?>
+		if ( 8 === get_the_ID() ) :
+			?>
 		<p><img src="<?php echo get_template_directory_uri() . '/dixy.png'; ?>" alt="DiXy image" /></p>
-		<?php
-
+			<?php
+		endif;
 			wp_link_pages(
 				array(
 					'before'      => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentysixteen' ) . '</span>',
