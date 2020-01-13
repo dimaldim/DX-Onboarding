@@ -23,6 +23,7 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 		public function __construct() {
 			add_filter( 'the_content', array( $this, 'prepend_content' ) );
 			add_filter( 'the_content', array( $this, 'append_content' ) );
+			add_filter( 'the_content', array( $this, 'append_new_div' ) );
 		}
 
 		/**
@@ -45,6 +46,22 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 		 */
 		public function append_content( $content ) {
 			return $content . ' by Dimitar Dimitrov';
+		}
+
+		/**
+		 * Add hidden div after the first <p>
+		 *
+		 * @param string $content the content.
+		 *
+		 * @return string
+		 */
+		public function append_new_div( $content ) {
+			$new_div             = '<div style="display: none;">I\'m hidden div</div>';
+			$separate_content    = explode( '<p>', $content );
+			$separate_content[0] = $new_div . $separate_content[0];
+			$new_content         = implode( '<p>', $separate_content );
+
+			return $new_content;
 		}
 	}
 }
