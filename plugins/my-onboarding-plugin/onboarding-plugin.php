@@ -12,6 +12,10 @@
  * @package My_Onboarding_Plugin
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if ( ! class_exists( 'DX_MOP' ) ) {
 	/**
 	 * Class DX_MOP
@@ -21,12 +25,82 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 		 * DX_MOP constructor.
 		 */
 		public function __construct() {
+			$mop_enabled = get_option( 'mop_enabled' ) == 1;
 			add_action( 'admin_bar_menu', array( $this, 'dx_mop_admin_bar_menu' ), 999 );
-			add_filter( 'the_content', array( $this, 'prepend_content' ) );
-			add_filter( 'the_content', array( $this, 'append_content' ) );
-			add_filter( 'the_content', array( $this, 'append_new_div' ) );
-			add_filter( 'the_content', array( $this, 'add_new_paragraph' ), 9 );
+			if ( $mop_enabled ) {
+				add_filter( 'the_content', array( $this, 'prepend_content' ) );
+				add_filter( 'the_content', array( $this, 'append_content' ) );
+				add_filter( 'the_content', array( $this, 'append_new_div' ) );
+				add_filter( 'the_content', array( $this, 'add_new_paragraph' ), 9 );
+			}
 			add_action( 'profile_update', array( $this, 'dx_mop_profile_update' ) );
+			add_action( 'admin_menu', array( $this, 'dx_mop_admin_menu' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'dx_mop_admin_enqueue_scripts' ) );
+			add_action( 'wp_ajax_mop_ajax_action', array( $this, 'dx_mop_admin_ajax' ) );
+		}
+
+		/**
+		 * Handle Ajax request for enable/disable mop.
+		 */
+		public function dx_mop_admin_ajax() {
+			$dx_mop_enabled = get_option( 'mop_enabled' );
+			if ( $dx_mop_enabled == 1 ) {
+				update_option( 'mop_enabled', 0 );
+			} else {
+				update_option( 'mop_enabled', 1 );
+			}
+		}
+
+		/**
+		 * Enqueue admin scripts
+		 */
+		public function dx_mop_admin_enqueue_scripts() {
+			wp_enqueue_script(
+				'mop-admin-js',
+				plugins_url( '/assets/mop.js', __FILE__ ),
+				array( 'jquery' ),
+				'1.0.0',
+				false
+			);
+			wp_localize_script(
+				'mop-admin-js',
+				'mop_ajax_object',
+				array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+			);
+		}
+
+		/**
+		 * Add options under "Settings" in admin menu.
+		 */
+		public function dx_mop_admin_menu() {
+			add_menu_page(
+				__( 'My onboarding', 'dx-mop' ),
+				__( 'My onboarding', 'dx-mop' ),
+				'manage_options',
+				'my-onboarding',
+				array(
+					$this,
+					'dx_mop_admin_html',
+				)
+			);
+		}
+
+		/**
+		 * HTML for the admin page.
+		 */
+		public function dx_mop_admin_html() {
+			$checkbox_checked = get_option( 'mop_enabled' ) == 1;
+			?>
+			<div class="wrap">
+				<h1>My Onboarding
+					<Plugin></Plugin>
+				</h1>
+				<label for="mop_enabled">
+					<input id="mop_enabled" <?php checked( $checkbox_checked, true, true ); ?> class="input-control"
+						   type="checkbox"> Enable MOP
+				</label>
+			</div>
+			<?php
 		}
 
 		/**
@@ -109,5 +183,16 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 		}
 	}
 }
+
+/**
+ * Fired on plugin activation.
+ */
+function on_mop_activation() {
+	if ( '' == get_option( 'mop_enabled' ) ) {
+		update_option( 'mop_enabled', 1 );
+	}
+}
+
+register_activation_hook( __FILE__, 'on_mop_activation' );
 
 new DX_MOP();
