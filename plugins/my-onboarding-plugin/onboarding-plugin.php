@@ -193,6 +193,14 @@ function on_mop_activation() {
 	}
 }
 
+/**
+ * Fires on plugin deactivation.
+ */
+function on_mop_deactivation() {
+	delete_option( 'mop_enabled' );
+}
+
 register_activation_hook( __FILE__, 'on_mop_activation' );
+register_deactivation_hook( __FILE__, 'on_mop_deactivation' );
 
 new DX_MOP();
