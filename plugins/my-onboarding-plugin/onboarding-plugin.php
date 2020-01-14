@@ -5,7 +5,7 @@
  * Version: 1.0.0
  * Author: Dimitar Dimitrov
  * Author URI: http://devrix.com/
- * Text Domain: dx-localhost
+ * Text Domain: dx-mop
  * Domain Path: /languages
  * License: GPL2
  *
