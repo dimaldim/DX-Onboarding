@@ -55,7 +55,7 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 				$response           = wp_safe_remote_get( $amazon_link );
 				$transient_duration = sanitize_text_field( wp_unslash( $_POST['transient-duration'] ) );
 				if ( is_wp_error( $response ) ) {
-					echo 'Something went wrong.';
+					_e( 'Something went wrong.', 'dx-amazon' );
 				} else {
 					$body = wp_remote_retrieve_body( $response );
 					set_transient( 'dx_amazon_results', $body, $transient_duration );
@@ -63,7 +63,7 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 					echo $body;
 				}
 			} else {
-				echo 'Please provide a link!';
+				_e( 'Please provide a link!', 'dx-amazon' );
 			}
 
 			wp_die(); // required for proper response.
