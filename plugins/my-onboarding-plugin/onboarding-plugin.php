@@ -59,7 +59,7 @@ function on_mop_activation() {
 }
 
 /**
- * Fires on plugin deactivation.
+ * Fired on plugin deactivation.
  */
 function on_mop_deactivation() {
 	delete_option( 'mop_enabled' );
