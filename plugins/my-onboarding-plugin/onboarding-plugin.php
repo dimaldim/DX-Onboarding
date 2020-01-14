@@ -49,6 +49,7 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 			} else {
 				update_option( 'mop_enabled', 1 );
 			}
+			wp_die();
 		}
 
 		/**
