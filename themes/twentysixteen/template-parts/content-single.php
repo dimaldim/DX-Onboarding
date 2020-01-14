@@ -18,7 +18,7 @@
 				_x( 'Posted by', '', 'twentisixteen' ),
 				esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
 				get_the_author(),
-				get_the_date()
+				get_the_date( 'l j.m.Y' )
 			);
 			?>
 		</p>
@@ -26,6 +26,7 @@
 
 	<?php
 	if ( 8 === get_the_ID() ) {
+		//the_excerpt();
 		twentysixteen_excerpt();
 	}
 	?>
@@ -35,11 +36,6 @@
 	<div class="entry-content">
 		<?php
 			the_content();
-		if ( 8 === get_the_ID() ) :
-			?>
-		<p><img src="<?php echo get_template_directory_uri() . '/dixy.png'; ?>" alt="DiXy image" /></p>
-			<?php
-		endif;
 			wp_link_pages(
 				array(
 					'before'      => '<div class="page-links"><span class="page-links-title">' . __( 'Pages:', 'twentysixteen' ) . '</span>',
@@ -71,4 +67,4 @@
 //			);
 			?>
 	</footer><!-- .entry-footer -->
-</article><!-- #post-<?php the_ID(); ?> -->
+</article><!-- #post--->
