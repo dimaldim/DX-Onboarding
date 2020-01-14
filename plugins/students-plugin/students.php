@@ -19,6 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+define( 'DX_STUDENTS_VERSION', '1.0.0' );
+define( 'DX_STUDENTS_PLUGIN_DIR_PATH', plugin_dir_path( __FILE__ ) );
+define( 'DX_STUDENTS_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
 if ( ! class_exists( 'DX_Students' ) ) {
 	/**
 	 * Class DX_Students
@@ -29,8 +33,21 @@ if ( ! class_exists( 'DX_Students' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'init', array( $this, 'student_init' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'dx_students_wp_enqueue_scripts' ) );
 			add_filter( 'post_updated_messages', array( $this, 'student_updated_messages' ) );
 			add_filter( 'single_template', array( $this, 'dx_students_single_template' ) );
+		}
+
+		/**
+		 * Enqueue scripts for frontend.
+		 */
+		public function dx_students_wp_enqueue_scripts() {
+			wp_enqueue_style(
+				'dx-students-style',
+				DX_STUDENTS_PLUGIN_URL . '/assets/dx-students.css',
+				'',
+				DX_STUDENTS_VERSION
+			);
 		}
 
 		/**
@@ -43,7 +60,7 @@ if ( ! class_exists( 'DX_Students' ) ) {
 		public function dx_students_single_template( $single ) {
 			global $post;
 			if ( 'student' === $post->post_type ) {
-				return plugin_dir_path( __FILE__ ) . '/single-student.php';
+				return DX_STUDENTS_PLUGIN_DIR_PATH . '/single-student.php';
 			}
 
 			return $single;
