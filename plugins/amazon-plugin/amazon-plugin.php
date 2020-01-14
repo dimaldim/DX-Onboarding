@@ -30,8 +30,10 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'dx_amazon_admin_menu' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'dx_amazon_admin_enqueue_scripts' ) );
-			add_action( 'wp_ajax_ap_ajax_action', array( $this, 'dx_amazon_ajax_action' ) );
-			add_action( 'wp_ajax_ap_ajax_clear_results', array( $this, 'dx_amazon_ajax_clear_results' ) );
+			if ( is_admin() ) {
+				add_action( 'wp_ajax_ap_ajax_action', array( $this, 'dx_amazon_ajax_action' ) );
+				add_action( 'wp_ajax_ap_ajax_clear_results', array( $this, 'dx_amazon_ajax_clear_results' ) );
+			}
 		}
 
 		/**
