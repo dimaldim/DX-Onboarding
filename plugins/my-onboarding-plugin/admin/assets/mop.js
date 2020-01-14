@@ -18,7 +18,12 @@ jQuery( document ).ready(
 				mop_ajax_object.ajax_url,
 				data,
 				function (response) {
-
+					let mop_heading = $( '#mop_heading' );
+					mop_heading.after(
+						function() {
+							return '<div class="updated notice">Onboarding filters updated!</div>';
+						}
+					)
 				}
 			);
 		}
