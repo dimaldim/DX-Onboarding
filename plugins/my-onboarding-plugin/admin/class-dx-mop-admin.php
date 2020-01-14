@@ -26,7 +26,9 @@ if ( ! class_exists( 'DX_MOP_Admin' ) ) {
 				array(
 					$this,
 					'dx_mop_admin_html',
-				)
+				),
+				'',
+				5
 			);
 		}
 
@@ -37,10 +39,10 @@ if ( ! class_exists( 'DX_MOP_Admin' ) ) {
 			$checkbox_checked = get_option( 'mop_enabled' ) == 1;
 			?>
 			<div class="wrap">
-				<h1 id="mop_heading">My Onboarding Plugin</h1>
-				<label for="mop_enabled">
-					<input id="mop_enabled" <?php checked( $checkbox_checked, true, true ); ?> class="input-control"
-						   type="checkbox"> Enable MOP
+				<h1 id="mop-heading"><?php _e( 'My Onboarding Plugin', 'dx-mop' ); ?></h1>
+				<label for="mop-enabled">
+					<input id="mop-enabled" <?php checked( $checkbox_checked, true, true ); ?> class="input-control"
+						   type="checkbox"> <?php _e( 'Enable MOP', 'dx-mop' ); ?>
 				</label>
 			</div>
 			<?php
@@ -54,10 +56,10 @@ if ( ! class_exists( 'DX_MOP_Admin' ) ) {
 		public function dx_mop_profile_update( $user_id ) {
 			$admin_email = get_option( 'admin_email' );
 			$user_info   = get_user_by( 'ID', $user_id );
-			$message     = sprintf( __( 'User %s has updated his/her profile.' ), $user_info->display_name );
+			$message     = sprintf( __( 'User %s has updated his/her profile.', 'dx-mop' ), $user_info->display_name );
 			wp_mail(
 				$admin_email,
-				sprintf( __( '%s - Profile updated' ), get_option( 'blogname' ) ),
+				sprintf( __( '%s - Profile updated', 'dx-mop' ), get_option( 'blogname' ) ),
 				$message
 			);
 		}
@@ -71,7 +73,7 @@ if ( ! class_exists( 'DX_MOP_Admin' ) ) {
 			$wp_admin_bar->add_menu(
 				array(
 					'id'    => 'profile-settings',
-					'title' => 'Profile Settings',
+					'title' => __( 'Profile Settings', 'dx-mop'),
 					'href'  => admin_url( 'profile.php' ),
 				)
 			);

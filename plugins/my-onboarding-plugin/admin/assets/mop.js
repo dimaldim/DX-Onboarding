@@ -3,7 +3,7 @@
  */
 jQuery( document ).ready(
 	function ( $ ) {
-		$( '#mop_enabled' ).change(
+		$( '#mop-enabled' ).change(
 			function () {
 				send_to_wp();
 			}
