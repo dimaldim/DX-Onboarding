@@ -34,8 +34,23 @@ if ( ! class_exists( 'DX_Students' ) ) {
 		public function __construct() {
 			add_action( 'init', array( $this, 'student_init' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'dx_students_wp_enqueue_scripts' ) );
+			add_action( 'pre_get_posts', array( $this, 'dx_students_pre_get_posts' ) );
 			add_filter( 'post_updated_messages', array( $this, 'student_updated_messages' ) );
 			add_filter( 'single_template', array( $this, 'dx_students_single_template' ) );
+			add_filter( 'template_include', array( $this, 'dx_students_archive_template' ) );
+		}
+
+		/**
+		 * Limit students per page.
+		 *
+		 * @param WP_Query $query query object.
+		 */
+		public function dx_students_pre_get_posts( $query ) {
+			if ( ! is_admin() && $query->is_main_query() ) {
+				if ( is_post_type_archive( 'student' ) ) {
+					$query->set( 'posts_per_page', 4 );
+				}
+			}
 		}
 
 		/**
@@ -158,6 +173,28 @@ if ( ! class_exists( 'DX_Students' ) ) {
 			);
 
 			return $messages;
+		}
+
+		/**
+		 * Override archive page for Student CPT
+		 * Users can override the template by creating the file in a child theme.
+		 *
+		 * @param string $template template file.
+		 *
+		 * @return string
+		 */
+		public function dx_students_archive_template( $template ) {
+			if ( is_post_type_archive( 'student' ) ) {
+				$templates = array( 'archive-student.php', 'students-plugin/archive-student.php' );
+				$exist     = locate_template( $templates, false );
+				if ( ! empty( $exist ) ) {
+					return $exist;
+				} else {
+					return DX_STUDENTS_PLUGIN_DIR_PATH . 'archive-student.php';
+				}
+			}
+
+			return $template;
 		}
 	}
 }
