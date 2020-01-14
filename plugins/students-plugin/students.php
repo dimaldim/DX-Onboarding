@@ -110,9 +110,15 @@ if ( ! class_exists( 'DX_Students' ) ) {
 				7  => __( 'Student saved.', 'dx-students' ),
 				/* translators: %s: post permalink */
 				8  => sprintf( __( 'Student submitted. <a target="_blank" href="%s">Preview student</a>', 'dx-students' ), esc_url( add_query_arg( 'preview', 'true', $permalink ) ) ),
+				9  => sprintf(
 				/* translators: 1: Publish box date format, see https://secure.php.net/date 2: Post permalink */
-				9  => sprintf( __( 'Student scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview student</a>', 'dx-students' ),
-					date_i18n( __( 'M j, Y @ G:i', 'dx-students' ), strtotime( $post->post_date ) ), esc_url( $permalink ) ),
+					__( 'Student scheduled for: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Preview student</a>', 'dx-students' ),
+					date_i18n(
+						__( 'M j, Y @ G:i', 'dx-students' ),
+						strtotime( $post->post_date )
+					),
+					esc_url( $permalink )
+				),
 				/* translators: %s: post permalink */
 				10 => sprintf( __( 'Student draft updated. <a target="_blank" href="%s">Preview student</a>', 'dx-students' ), esc_url( add_query_arg( 'preview', 'true', $permalink ) ) ),
 			);
