@@ -35,9 +35,42 @@ if ( ! class_exists( 'DX_Students' ) ) {
 			add_action( 'init', array( $this, 'student_init' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'dx_students_wp_enqueue_scripts' ) );
 			add_action( 'pre_get_posts', array( $this, 'dx_students_pre_get_posts' ) );
+			add_action( 'add_meta_boxes', array( $this, 'dx_students_add_meta_boxes' ) );
 			add_filter( 'post_updated_messages', array( $this, 'student_updated_messages' ) );
 			add_filter( 'single_template', array( $this, 'dx_students_single_template' ) );
 			add_filter( 'template_include', array( $this, 'dx_students_archive_template' ) );
+		}
+
+		/**
+		 * Add custom meta boxes for Student CPT;
+		 *
+		 * @param WP_Post $post post object.
+		 */
+		public function dx_students_add_meta_boxes( $post ) {
+			add_meta_box(
+				'dx_students_metabox',
+				__( 'Student Info', 'dx-students' ),
+				array( $this, 'dx_students_meta_box_html' ),
+				'student'
+			);
+		}
+
+		/**
+		 * Display custom meta box.
+		 *
+		 * @param WP_Post $post post object
+		 */
+		public function dx_students_meta_box_html( $post ) {
+			wp_nonce_field( 'dx_students_meta_box', 'dx_students_meta_box_nonce' );
+			$meta_info = get_post_meta( $post->ID ); // get all post meta information.
+			?>
+			<div class="wrap">
+				<label for="dx-student-lives-in"><?php _e( 'Lives In: ', 'dx-students' ); ?></label>
+				<input type="text" id="dx-student-lives-in" value="<?php esc_attr( $meta_info['student_lives_in'] ); ?>">
+				<label for="dx-student-lives-in"><?php _e( 'Lives In: ', 'dx-students' ); ?></label>
+				<input type="text" id="dx-student-lives-in" value="<?php esc_attr( $meta_info['student_lives_in'] ); ?>">
+			</div>
+			<?php
 		}
 
 		/**

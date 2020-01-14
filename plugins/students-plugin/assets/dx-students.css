@@ -5,3 +5,7 @@
 .dx-student-class-info {
 	margin-top: 10px;
 }
+
+.student-info > span {
+	display: block;
+}

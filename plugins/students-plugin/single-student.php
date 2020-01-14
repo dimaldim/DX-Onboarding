@@ -18,6 +18,12 @@ get_header();
 					echo get_the_post_thumbnail( get_the_ID(), 'thumbnail' );
 					if ( ! empty( $enrolled_classes ) ) :
 						?>
+						<div class="student-info">
+							<span><b>Lives In:</b></span>
+							<span><b>Address:</b> </span>
+							<span><b>Birth Date:</b></span>
+							<span><b>Class / Grade:</b> </span>
+						</div>
 						<div class="dx-student-class-info">
 							<h3>Enrolled classes: </h3>
 							<ul>
