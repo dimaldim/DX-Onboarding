@@ -1,8 +1,7 @@
 /**
  * My onboarding plugin admin JavaScript.
  */
-jQuery( document ).ready(
-	function ( $ ) {
+jQuery( document ).ready(function ( $ ) {
 		$( '#mop-enabled' ).change(
 			function () {
 				send_to_wp();

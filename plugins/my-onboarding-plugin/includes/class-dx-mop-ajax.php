@@ -10,9 +10,7 @@ if ( ! class_exists( 'DX_MOP_Ajax' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'admin_enqueue_scripts', array( $this, 'dx_mop_admin_enqueue_scripts' ) );
-			if ( is_admin() ) {
-				add_action( 'wp_ajax_mop_ajax_action', array( $this, 'dx_mop_admin_ajax' ) );
-			}
+			add_action( 'wp_ajax_mop_ajax_action', array( $this, 'dx_mop_admin_ajax' ) );
 		}
 
 		/**

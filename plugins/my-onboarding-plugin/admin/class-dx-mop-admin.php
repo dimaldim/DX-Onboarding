@@ -73,7 +73,7 @@ if ( ! class_exists( 'DX_MOP_Admin' ) ) {
 			$wp_admin_bar->add_menu(
 				array(
 					'id'    => 'profile-settings',
-					'title' => __( 'Profile Settings', 'dx-mop'),
+					'title' => __( 'Profile Settings', 'dx-mop' ),
 					'href'  => admin_url( 'profile.php' ),
 				)
 			);
