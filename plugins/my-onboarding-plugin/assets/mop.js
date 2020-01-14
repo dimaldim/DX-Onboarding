@@ -1,9 +1,13 @@
-jQuery(document).ready(function ($) {
-		$('#mop_enabled').change(
+/**
+ * My onboarding plugin admin JavaScript.
+ */
+jQuery( document ).ready(
+	function ( $ ) {
+		$( '#mop_enabled' ).change(
 			function () {
 				send_to_wp();
 			}
-		)
+		);
 
 		function send_to_wp() {
 			var data = {
