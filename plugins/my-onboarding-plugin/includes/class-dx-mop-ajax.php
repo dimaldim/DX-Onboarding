@@ -16,7 +16,7 @@ if ( ! class_exists( 'DX_MOP_Ajax' ) ) {
 		}
 
 		/**
-		 * Handle Ajax request for enable/disable mop.
+		 * Handle Ajax request for enable/disable MOP.
 		 */
 		public function dx_mop_admin_ajax() {
 			check_ajax_referer( 'mop_ajax_nonce', '_nonce' );
@@ -39,7 +39,7 @@ if ( ! class_exists( 'DX_MOP_Ajax' ) ) {
 					'mop-admin-js',
 					plugins_url( '/admin/assets/mop.js', dirname( __FILE__ ) ),
 					array( 'jquery' ),
-					'1.0.0',
+					MOP_PLUGIN_VERSION,
 					false
 				);
 				wp_localize_script(

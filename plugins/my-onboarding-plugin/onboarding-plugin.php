@@ -20,6 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'MOP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'MOP_PLUGIN_VERSION', '1.0.0' );
 
 if ( ! class_exists( 'DX_MOP' ) ) {
 	/**
