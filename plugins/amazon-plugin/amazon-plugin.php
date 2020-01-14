@@ -31,6 +31,16 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 			add_action( 'admin_menu', array( $this, 'dx_amazon_admin_menu' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'dx_amazon_admin_enqueue_scripts' ) );
 			add_action( 'wp_ajax_ap_ajax_action', array( $this, 'dx_amazon_ajax_action' ) );
+			add_action( 'wp_ajax_ap_ajax_clear_results', array( $this, 'dx_amazon_ajax_clear_results' ) );
+		}
+
+		/**
+		 * Clear results.
+		 */
+		public function dx_amazon_ajax_clear_results() {
+			check_ajax_referer( 'dx_amazon_ajax_nonce', '_nonce' );
+			delete_transient( 'dx_amazon_results' );
+			delete_transient( 'dx_amazon_link' );
 		}
 
 		/**
@@ -129,6 +139,9 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 						<td>
 							<input type="submit" id="dx-amazon-save-results" value="Get results!"
 								   class="button-primary">
+						</td>
+						<td>
+							<button class="button-primary" id="dx-amazon-clear-results">Clear results!</button>
 						</td>
 					</tr>
 					</tbody>

@@ -9,9 +9,29 @@ jQuery( document ).ready(
 			}
 		);
 
+		$( '#dx-amazon-clear-results' ).click(
+			function () {
+				dx_amazon_clear_results();
+			}
+		);
+
+		let div_results = $( '#amazon-results' );
+		function dx_amazon_clear_results() {
+			var data = {
+				'action': 'ap_ajax_clear_results',
+				'_nonce': ap_ajax_object._ajax_nonce,
+			};
+			$.post(
+				ap_ajax_object.ajax_url,
+				data,
+				function (response) {
+					div_results.html( '' );
+				}
+			);
+		}
+
 		function dx_amazon_send_to_wp() {
 			let amazon_link        = $( '#amazon-link' ).val();
-			let div_results        = $( '#amazon-results' );
 			let transient_duration = $( '#amazon-transient-duration' ).val();
 			var data 		= {
 				'action': 'ap_ajax_action',
@@ -23,7 +43,6 @@ jQuery( document ).ready(
 				ap_ajax_object.ajax_url,
 				data,
 				function (response) {
-					console.log(response);
 					div_results.html( response );
 				}
 			);
