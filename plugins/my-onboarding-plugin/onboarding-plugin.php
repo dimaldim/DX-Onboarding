@@ -43,6 +43,7 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 		 * Handle Ajax request for enable/disable mop.
 		 */
 		public function dx_mop_admin_ajax() {
+			check_ajax_referer( 'mop_ajax_nonce', '_nonce' );
 			$dx_mop_enabled = get_option( 'mop_enabled' );
 			if ( $dx_mop_enabled == 1 ) {
 				update_option( 'mop_enabled', 0 );
@@ -56,6 +57,7 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 		 * Enqueue admin scripts
 		 */
 		public function dx_mop_admin_enqueue_scripts() {
+			$nonce = wp_create_nonce( 'mop_ajax_nonce' );
 			wp_enqueue_script(
 				'mop-admin-js',
 				plugins_url( '/assets/mop.js', __FILE__ ),
@@ -66,7 +68,10 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 			wp_localize_script(
 				'mop-admin-js',
 				'mop_ajax_object',
-				array( 'ajax_url' => admin_url( 'admin-ajax.php' ) )
+				array(
+					'ajax_url'    => admin_url( 'admin-ajax.php' ),
+					'_ajax_nonce' => $nonce,
+				)
 			);
 		}
 
