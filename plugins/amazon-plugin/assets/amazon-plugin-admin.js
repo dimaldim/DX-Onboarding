@@ -1,8 +1,7 @@
 /**
  * Amazon plugin admin JS.
  */
-jQuery( document ).ready(
-	function ( $ ) {
+jQuery( document ).ready(function ( $ ) {
 		$( '#dx-amazon-save-results' ).click(
 			function () {
 				dx_amazon_send_to_wp();

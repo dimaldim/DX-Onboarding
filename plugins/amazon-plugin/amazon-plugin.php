@@ -58,9 +58,11 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 					_e( 'Something went wrong.', 'dx-amazon' );
 				} else {
 					$body = wp_remote_retrieve_body( $response );
-					set_transient( 'dx_amazon_results', $body, $transient_duration );
-					set_transient( 'dx_amazon_link', $amazon_link, $transient_duration );
-					echo $body;
+					if ( ! empty( $body ) ) {
+						set_transient( 'dx_amazon_results', $body, $transient_duration );
+						set_transient( 'dx_amazon_link', $amazon_link, $transient_duration );
+						echo $body;
+					}
 				}
 			} else {
 				_e( 'Please provide a link!', 'dx-amazon' );
