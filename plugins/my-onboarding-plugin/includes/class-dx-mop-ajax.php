@@ -32,23 +32,25 @@ if ( ! class_exists( 'DX_MOP_Ajax' ) ) {
 		/**
 		 * Enqueue admin scripts
 		 */
-		public function dx_mop_admin_enqueue_scripts() {
-			$nonce = wp_create_nonce( 'mop_ajax_nonce' );
-			wp_enqueue_script(
-				'mop-admin-js',
-				plugins_url( '/admin/assets/mop.js', dirname( __FILE__ ) ),
-				array( 'jquery' ),
-				'1.0.0',
-				false
-			);
-			wp_localize_script(
-				'mop-admin-js',
-				'mop_ajax_object',
-				array(
-					'ajax_url'    => admin_url( 'admin-ajax.php' ),
-					'_ajax_nonce' => $nonce,
-				)
-			);
+		public function dx_mop_admin_enqueue_scripts( $hook ) {
+			if ( 'toplevel_page_my-onboarding' === $hook ) {
+				$nonce = wp_create_nonce( 'mop_ajax_nonce' );
+				wp_enqueue_script(
+					'mop-admin-js',
+					plugins_url( '/admin/assets/mop.js', dirname( __FILE__ ) ),
+					array( 'jquery' ),
+					'1.0.0',
+					false
+				);
+				wp_localize_script(
+					'mop-admin-js',
+					'mop_ajax_object',
+					array(
+						'ajax_url'    => admin_url( 'admin-ajax.php' ),
+						'_ajax_nonce' => $nonce,
+					)
+				);
+			}
 		}
 	}
 }
