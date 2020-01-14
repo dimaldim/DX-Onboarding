@@ -39,12 +39,16 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 		public function dx_amazon_ajax_action() {
 			check_ajax_referer( 'dx_amazon_ajax_nonce', '_nonce' );
 			if ( ! empty( $_POST['amazon-link'] ) ) {
-				$amazon_link = sanitize_text_field( wp_unslash( $_POST['amazon-link'] ) );
-				$response    = wp_safe_remote_get( $amazon_link );
+				$amazon_link        = sanitize_text_field( wp_unslash( $_POST['amazon-link'] ) );
+				$response           = wp_safe_remote_get( $amazon_link );
+				$transient_duration = sanitize_text_field( $_POST['transient-duration'] );
 				if ( is_wp_error( $response ) ) {
 					echo 'Something went wrong.';
 				} else {
-					echo wp_remote_retrieve_body( $response );
+					$body = wp_remote_retrieve_body( $response );
+					set_transient( 'dx_amazon_results', $body, $transient_duration );
+					set_transient( 'dx_amazon_link', $amazon_link, $transient_duration );
+					echo $body;
 				}
 
 				wp_die(); // required for proper response.
@@ -98,14 +102,28 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 		/**
 		 * Display HTML for the admin page.
 		 */
-		public function dx_amazon_admin_html() { ?>
+		public function dx_amazon_admin_html() {
+			$cached_result = get_transient( 'dx_amazon_results' );
+			$cached_link   = get_transient( 'dx_amazon_link' );
+			?>
 			<div class="wrap">
 				<h1>Amazon Plugin</h1>
 				<table class="form-table">
 					<tbody>
 					<tr>
 						<th scope="row">Amazon Link:</th>
-						<td><input type="text" id="amazon-link"></td>
+						<td><input type="text" value="<?php echo esc_attr( $cached_link ); ?>" id="amazon-link"></td>
+					</tr>
+					<tr>
+						<th scope="row">Transient Duration:</th>
+						<td>
+							<select name="" id="amazon-transient-duration">
+								<option value="5">5 seconds</option>
+								<option value="900">15 minutes</option>
+								<option value="1800">30 minutes</option>
+								<option value="3600">1 hour</option>
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td>
@@ -115,7 +133,13 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 					</tr>
 					</tbody>
 				</table>
-				<div id="amazon-results"></div>
+				<div id="amazon-results">
+					<?php
+					if ( ! empty( $cached_result ) ) {
+						echo $cached_result;
+					}
+					?>
+				</div>
 			</div>
 			<?php
 		}
