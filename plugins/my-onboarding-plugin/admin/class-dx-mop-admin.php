@@ -36,12 +36,12 @@ if ( ! class_exists( 'DX_MOP_Admin' ) ) {
 		 * HTML for the admin page.
 		 */
 		public function dx_mop_admin_html() {
-			$checkbox_checked = get_option( 'mop_enabled' ) == 1;
+			$checkbox_checked = get_option( 'mop_enabled' );
 			?>
 			<div class="wrap">
 				<h1 id="mop-heading"><?php _e( 'My Onboarding Plugin', 'dx-mop' ); ?></h1>
 				<label for="mop-enabled">
-					<input id="mop-enabled" <?php checked( $checkbox_checked, true, true ); ?> class="input-control"
+					<input id="mop-enabled" <?php checked( $checkbox_checked, 1, true ); ?> class="form-field"
 						   type="checkbox"> <?php _e( 'Enable MOP', 'dx-mop' ); ?>
 				</label>
 			</div>
