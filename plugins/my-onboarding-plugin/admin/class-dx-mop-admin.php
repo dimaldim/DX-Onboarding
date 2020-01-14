@@ -37,9 +37,7 @@ if ( ! class_exists( 'DX_MOP_Admin' ) ) {
 			$checkbox_checked = get_option( 'mop_enabled' ) == 1;
 			?>
 			<div class="wrap">
-				<h1>My Onboarding
-					<Plugin></Plugin>
-				</h1>
+				<h1>My Onboarding Plugin</h1>
 				<label for="mop_enabled">
 					<input id="mop_enabled" <?php checked( $checkbox_checked, true, true ); ?> class="input-control"
 						   type="checkbox"> Enable MOP
