@@ -30,6 +30,23 @@ if ( ! class_exists( 'DX_Students' ) ) {
 		public function __construct() {
 			add_action( 'init', array( $this, 'student_init' ) );
 			add_filter( 'post_updated_messages', array( $this, 'student_updated_messages' ) );
+			add_filter( 'single_template', array( $this, 'dx_students_single_template' ) );
+		}
+
+		/**
+		 * Override single template.
+		 *
+		 * @param string $single template.
+		 *
+		 * @return string
+		 */
+		public function dx_students_single_template( $single ) {
+			global $post;
+			if ( 'student' === $post->post_type ) {
+				return plugin_dir_path( __FILE__ ) . '/single-student.php';
+			}
+
+			return $single;
 		}
 
 		/**
