@@ -50,10 +50,10 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 		 */
 		public function dx_amazon_ajax_action() {
 			check_ajax_referer( 'dx_amazon_ajax_nonce', '_nonce' );
-			if ( ! empty( $_POST['amazon-link'] ) ) {
+			if ( ! empty( $_POST['amazon-link'] ) && ! empty( $_POST['transient-duration'] ) ) {
 				$amazon_link        = sanitize_text_field( wp_unslash( $_POST['amazon-link'] ) );
 				$response           = wp_safe_remote_get( $amazon_link );
-				$transient_duration = sanitize_text_field( $_POST['transient-duration'] );
+				$transient_duration = sanitize_text_field( wp_unslash( $_POST['transient-duration'] ) );
 				if ( is_wp_error( $response ) ) {
 					echo 'Something went wrong.';
 				} else {
@@ -119,31 +119,40 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 			$cached_link   = get_transient( 'dx_amazon_link' );
 			?>
 			<div class="wrap">
-				<h1>Amazon Plugin</h1>
+				<h1><?php _e( 'Amazon Plugin', 'dx-amazon' ); ?></h1>
 				<table class="form-table">
 					<tbody>
 					<tr>
-						<th scope="row">Amazon Link:</th>
+						<th scope="row">
+							<label for="amazon-link"><?php _e( 'Amazon Link:', 'dx-amazon' ); ?></label>
+						</th>
 						<td><input type="text" value="<?php echo esc_attr( $cached_link ); ?>" id="amazon-link"></td>
 					</tr>
 					<tr>
-						<th scope="row">Transient Duration:</th>
+						<th scope="row">
+							<label for="amazon-transient-duration">
+								<?php _e( 'Transient Duration:', 'dx-amazon' ); ?>
+							</label>
+						</th>
 						<td>
 							<select name="" id="amazon-transient-duration">
-								<option value="5">5 seconds</option>
-								<option value="900">15 minutes</option>
-								<option value="1800">30 minutes</option>
-								<option value="3600">1 hour</option>
+								<option value="5"><?php _e( '5 seconds', 'dx-amazon' ); ?></option>
+								<option value="900"><?php _e( '15 minutes', 'dx-amazon' ); ?></option>
+								<option value="1800"><?php _e( '30 minutes', 'dx-amazon' ); ?></option>
+								<option value="3600"><?php _e( '1 hour', 'dx-amazon' ); ?></option>
 							</select>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<input type="submit" id="dx-amazon-save-results" value="Get results!"
+							<input type="submit" id="dx-amazon-save-results"
+								   value="<?php _e( 'Get results!', 'dx-amazon' ); ?>"
 								   class="button-primary">
 						</td>
 						<td>
-							<button class="button-primary" id="dx-amazon-clear-results">Clear results!</button>
+							<button class="button-primary" id="dx-amazon-clear-results">
+								<?php _e( 'Clear results!', 'dx-amazon' ); ?>
+							</button>
 						</td>
 					</tr>
 					</tbody>
