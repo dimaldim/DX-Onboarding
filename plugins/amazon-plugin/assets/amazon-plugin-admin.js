@@ -34,7 +34,7 @@ jQuery( document ).ready(
 
 		function dx_amazon_send_to_wp() {
 			let transient_duration = $( '#amazon-transient-duration' ).val();
-			var data 		= {
+			var data 		       = {
 				'action': 'ap_ajax_action',
 				'_nonce': ap_ajax_object._ajax_nonce,
 				'amazon-link': amazon_link.val(),
