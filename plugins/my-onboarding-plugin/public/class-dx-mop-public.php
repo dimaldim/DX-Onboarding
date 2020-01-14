@@ -26,7 +26,11 @@ if ( ! class_exists( 'DX_MOP_Public' ) ) {
 		 * @return string
 		 */
 		public function prepend_content( $content ) {
-			return 'Onboarding Filter: ' . $content;
+			if ( 'student' === get_post_type() ) {
+				return 'Onboarding Filter: ' . $content;
+			}
+
+			return $content;
 		}
 
 		/**
@@ -37,7 +41,11 @@ if ( ! class_exists( 'DX_MOP_Public' ) ) {
 		 * @return string
 		 */
 		public function append_content( $content ) {
-			return $content . ' by Dimitar Dimitrov';
+			if ( 'student' === get_post_type() ) {
+				return $content . ' by Dimitar Dimitrov';
+			}
+
+			return $content;
 		}
 
 		/**
@@ -48,11 +56,15 @@ if ( ! class_exists( 'DX_MOP_Public' ) ) {
 		 * @return string
 		 */
 		public function append_new_div( $content ) {
-			$new_div             = '<div style="display: none;">I\'m hidden div</div>';
-			$separate_content    = explode( '<p>', $content );
-			$separate_content[1] = $new_div . $separate_content[1];
+			if ( 'student' === get_post_type() ) {
+				$new_div             = '<div style="display: none;">I\'m hidden div</div>';
+				$separate_content    = explode( '<p>', $content );
+				$separate_content[1] = $new_div . $separate_content[1];
 
-			return implode( '<p>', $separate_content );
+				return implode( '<p>', $separate_content );
+			}
+
+			return $content;
 		}
 
 		/**
@@ -63,7 +75,11 @@ if ( ! class_exists( 'DX_MOP_Public' ) ) {
 		 * @return string
 		 */
 		public function add_new_paragraph( $content ) {
-			return '<p>new paragraph</p>' . $content;
+			if ( 'student' === get_post_type() ) {
+				return '<p>new paragraph</p>' . $content;
+			}
+
+			return $content;
 		}
 	}
 }
