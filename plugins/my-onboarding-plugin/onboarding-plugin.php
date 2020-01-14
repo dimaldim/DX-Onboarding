@@ -12,9 +12,14 @@
  * @package My_Onboarding_Plugin
  */
 
+/**
+ * Abort if file is called directly.
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+define( 'MOP_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 if ( ! class_exists( 'DX_MOP' ) ) {
 	/**
@@ -35,16 +40,16 @@ if ( ! class_exists( 'DX_MOP' ) ) {
 			/**
 			 * Load public class
 			 */
-			require_once plugin_dir_path( __FILE__ ) . 'public/class-dx-mop-public.php';
+			require_once MOP_PLUGIN_PATH . 'public/class-dx-mop-public.php';
 
 			/*
 			 * Load ajax class
 			 */
-			require_once plugin_dir_path( __FILE__ ) . 'includes/class-dx-mop-ajax.php';
+			require_once MOP_PLUGIN_PATH . 'includes/class-dx-mop-ajax.php';
 			/**
 			 * Load admin class
 			 */
-			require_once plugin_dir_path( __FILE__ ) . 'admin/class-dx-mop-admin.php';
+			require_once MOP_PLUGIN_PATH . 'admin/class-dx-mop-admin.php';
 		}
 	}
 }
