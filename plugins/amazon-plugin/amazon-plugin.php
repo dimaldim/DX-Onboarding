@@ -30,6 +30,25 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 		public function __construct() {
 			add_action( 'admin_menu', array( $this, 'dx_amazon_admin_menu' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'dx_amazon_admin_enqueue_scripts' ) );
+			add_action( 'wp_ajax_ap_ajax_action', array( $this, 'dx_amazon_ajax_action' ) );
+		}
+
+		/**
+		 * Process Ajax request.
+		 */
+		public function dx_amazon_ajax_action() {
+			check_ajax_referer( 'dx_amazon_ajax_nonce', '_nonce' );
+			if ( ! empty( $_POST['amazon-link'] ) ) {
+				$amazon_link = sanitize_text_field( wp_unslash( $_POST['amazon-link'] ) );
+				$response    = wp_safe_remote_get( $amazon_link );
+				if ( is_wp_error( $response ) ) {
+					echo 'Something went wrong.';
+				} else {
+					echo wp_remote_retrieve_body( $response );
+				}
+
+				wp_die(); // required for proper response.
+			}
 		}
 
 		/**
@@ -90,14 +109,13 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 					</tr>
 					<tr>
 						<td>
-							<input type="submit" value="Get results!" class="button-primary">
+							<input type="submit" id="dx-amazon-save-results" value="Get results!"
+								   class="button-primary">
 						</td>
 					</tr>
 					</tbody>
 				</table>
-				<div id="amazon-results">
-					test
-				</div>
+				<div id="amazon-results"></div>
 			</div>
 			<?php
 		}
