@@ -15,6 +15,7 @@ if ( ! class_exists( 'DX_MOP_Public' ) ) {
 				add_filter( 'the_content', array( $this, 'append_content' ) );
 				add_filter( 'the_content', array( $this, 'append_new_div' ) );
 				add_filter( 'the_content', array( $this, 'add_new_paragraph' ), 9 );
+				add_filter( 'the_content', array( $this, 'add_dixy_image' ) );
 			}
 		}
 
@@ -79,6 +80,15 @@ if ( ! class_exists( 'DX_MOP_Public' ) ) {
 				return '<p>new paragraph</p>' . $content;
 			}
 
+			return $content;
+		}
+		/**
+		 *
+		 */
+		public function add_dixy_image( $content ) {
+			if ( 8 === get_the_ID() ) {
+				return $content . '<p><img src="' . (plugin_dir_url(dirname(__FILE__)) . '/public/assets/dixy.png') . '" alt="DiXy image" /></p>';
+			}
 			return $content;
 		}
 	}
