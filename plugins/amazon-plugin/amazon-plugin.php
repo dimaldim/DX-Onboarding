@@ -62,9 +62,11 @@ if ( ! class_exists( 'DX_Amazon' ) ) {
 					set_transient( 'dx_amazon_link', $amazon_link, $transient_duration );
 					echo $body;
 				}
-
-				wp_die(); // required for proper response.
+			} else {
+				echo 'Please provide a link!';
 			}
+
+			wp_die(); // required for proper response.
 		}
 
 		/**
