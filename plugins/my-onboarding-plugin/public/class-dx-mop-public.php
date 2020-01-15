@@ -82,12 +82,17 @@ if ( ! class_exists( 'DX_MOP_Public' ) ) {
 
 			return $content;
 		}
+
 		/**
+		 * Add DiXy image after the content.
 		 *
+		 * @param string $content the content.
+		 *
+		 * @return string
 		 */
 		public function add_dixy_image( $content ) {
-			if ( 8 === get_the_ID() ) {
-				return $content . '<p><img src="' . (plugin_dir_url(dirname(__FILE__)) . '/public/assets/dixy.png') . '" alt="DiXy image" /></p>';
+			if ( 8 === get_the_ID() && 'student' === get_post_type() ) {
+				return $content . '<p><img src="' . ( plugin_dir_url( dirname( __FILE__ ) ) . '/public/assets/dixy.png' ) . '" alt="DiXy image" /></p>';
 			}
 			return $content;
 		}
