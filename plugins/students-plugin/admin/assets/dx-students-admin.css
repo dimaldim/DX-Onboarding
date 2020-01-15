@@ -1,0 +1,9 @@
+.dx-students-admin label {
+	display: block;
+	font-weight: bold;
+}
+
+.dx-students-admin input {
+	width: 100%;
+	border-radius: 10px;
+}
