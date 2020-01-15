@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
 			let student_id = $(this).data('studentId');
 
 			change_student_status(student_id);
-		})
+		});
 	});
 
 	function clear_old_notices() {

@@ -41,10 +41,67 @@ if ( ! class_exists( 'DX_Students' ) ) {
 			add_action( 'manage_student_posts_custom_column', array( $this, 'dx_student_active_column' ), 10, 2 );
 			add_action( 'wp_ajax_dx_student_change_status', array( $this, 'dx_student_change_status' ) );
 			add_action( 'wp_insert_post', array( $this, 'dx_wp_insert_post' ) );
+			add_action( 'widgets_init', array( $this, 'dx_student_widget_init' ) );
 			add_filter( 'post_updated_messages', array( $this, 'student_updated_messages' ) );
 			add_filter( 'single_template', array( $this, 'dx_students_single_template' ) );
 			add_filter( 'template_include', array( $this, 'dx_students_archive_template' ) );
 			add_filter( 'manage_student_posts_columns', array( $this, 'dx_student_manage_columns' ) );
+			add_shortcode( 'student', array( $this, 'dx_student_shortcode' ) );
+		}
+
+		/**
+		 * Register DX Student Widget.
+		 */
+		public function dx_student_widget_init() {
+			require_once DX_STUDENTS_PLUGIN_DIR_PATH . '/public/class-dx-student-widget.php';
+			register_widget( 'DX_Student_Widget' );
+		}
+
+		/**
+		 * DX Student shortcode function.
+		 *
+		 * @param array $atts shortcode attributes.
+		 *
+		 * @return string
+		 */
+		public function dx_student_shortcode( $atts ) {
+			$html       = '<div class="dx-student-shortcode">';
+			$attr       = shortcode_atts(
+				array(
+					'id' => null,
+				),
+				$atts
+			);
+			$student_id = ! empty( $attr['id'] ) ? (int) $attr['id'] : '';
+
+			if ( ! empty( $student_id ) ) {
+				$query_args     = array(
+					'post_type'  => 'student',
+					'p'          => $student_id,
+					'meta_key'   => 'student_status',
+					'meta_value' => 1
+				);
+				$student_query  = new WP_Query( $query_args );
+				$found_students = $student_query->found_posts;
+				if ( 0 === $found_students ) {
+					$html .= __( 'No student found with the provided ID', 'dx-students' );
+				} else {
+					while ( $student_query->have_posts() ) {
+						$student_query->the_post();
+						/* translators: %s Student Class / Grade */
+						$student_class = sprintf( __( 'Class / Grade: %s', 'dx-students' ), 'test' );
+						$html          .= get_the_post_thumbnail();
+						$html          .= '<span class="student-name">' . get_the_title() . '</span>';
+						$html          .= '<span class="student-class">' . $student_class . '</span>';
+					}
+					wp_reset_postdata();
+				}
+			} else {
+				$html .= __( 'Please provide student ID.', 'dx-students' );
+			}
+			$html .= '</div>';
+
+			return $html;
 		}
 
 		/**
