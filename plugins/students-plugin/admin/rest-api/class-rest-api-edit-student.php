@@ -35,7 +35,7 @@ class DX_Student_Edit extends WP_REST_Controller {
 	}
 
 	/**
-	 * Handle call for creating student.
+	 * Handle call for editing student.
 	 *
 	 * @param WP_REST_Request $request the request.
 	 *

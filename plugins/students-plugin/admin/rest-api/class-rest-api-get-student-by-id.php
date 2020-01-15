@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Class DX_Student_All_Students
- * Handle REST API call for getting all students.
+ * Class DX_Student_Get_By_ID
+ * Handle REST API call for getting student by ID
  */
 class DX_Student_Get_By_ID extends WP_REST_Controller {
 	/**

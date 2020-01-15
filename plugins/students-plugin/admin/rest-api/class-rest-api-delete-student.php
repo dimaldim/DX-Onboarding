@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Class DX_Student_All_Students
- * Handle REST API call for getting all students.
+ * Class DX_Student_Delete
+ * Handle REST API call for deleting student.
  */
 class DX_Student_Delete extends WP_REST_Controller {
 	/**
