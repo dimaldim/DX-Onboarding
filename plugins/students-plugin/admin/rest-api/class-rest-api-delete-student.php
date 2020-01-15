@@ -26,7 +26,7 @@ class DX_Student_Delete extends WP_REST_Controller {
 	/**
 	 * Check user capabilities before handle the call.
 	 *
-	 * @param WP_REST_Request $request the request
+	 * @param WP_REST_Request $request the request.
 	 *
 	 * @return bool|WP_Error
 	 */

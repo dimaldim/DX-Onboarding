@@ -12,6 +12,28 @@ if ( ! class_exists( 'DX_Student_Rest' ) ) {
 			add_action( 'rest_api_init', array( $this, 'dx_rest_student_get_all' ) );
 			add_action( 'rest_api_init', array( $this, 'dx_rest_student_get_by_id' ) );
 			add_action( 'rest_api_init', array( $this, 'dx_rest_student_delete' ) );
+			add_action( 'rest_api_init', array( $this, 'dx_rest_student_create' ) );
+			add_action( 'rest_api_init', array( $this, 'dx_rest_student_edit' ) );
+		}
+
+		/**
+		 * Register our custom endpoint for the REST API.
+		 * This function register /student/v1/student/edit/<student-id>
+		 */
+		public function dx_rest_student_edit() {
+			require_once DX_STUDENTS_PLUGIN_DIR_PATH . 'admin/rest-api/class-rest-api-edit-student.php';
+			$handle = new DX_Student_Edit();
+			$handle->register_routes();
+		}
+
+		/**
+		 * Register our custom endpoint for the REST API.
+		 * This function register /student/v1/student/create
+		 */
+		public function dx_rest_student_create() {
+			require_once DX_STUDENTS_PLUGIN_DIR_PATH . 'admin/rest-api/class-rest-api-create-student.php';
+			$handle = new DX_Student_Create();
+			$handle->register_routes();
 		}
 
 		/**
