@@ -19,7 +19,7 @@ if ( ! class_exists( 'DX_Student_Widget' ) ) {
 
 		public function widget( $args, $instance ) {
 			$title          = apply_filters( 'widget_title', __( 'Students', 'dx-students' ) );
-			$student_status = $instance['dx_student_widget_student_status'] === 'active' ? 1 : 0;
+			$student_status = 'active' === $instance['dx_student_widget_student_status'] ? 1 : 0;
 			$per_page       = $instance['dx_student_widget_posts_per_page'];
 
 			echo $args['before_widget'];
@@ -27,19 +27,19 @@ if ( ! class_exists( 'DX_Student_Widget' ) ) {
 				echo $args['before_title'] . $title . $args['after_title'];
 			}
 
-			$args  = array(
+			$student_args = array(
 				'post_type'      => 'student',
 				'posts_per_page' => $per_page,
 				'meta_key'       => 'student_status',
 				'meta_value'     => $student_status,
 			);
-			$query = new WP_Query( $args );
+			$query        = new WP_Query( $student_args );
 
 			if ( $query->have_posts() ) {
 				echo '<ul>';
 				while ( $query->have_posts() ) {
 					$query->the_post();
-					echo '<li><a href="'. get_the_permalink( $query->post->ID ) . '">' . get_the_title() . '</a></li>';
+					echo '<li><a href="' . get_the_permalink( $query->post->ID ) . '">' . get_the_title() . '</a></li>';
 				}
 				echo '</ul>';
 			} else {
