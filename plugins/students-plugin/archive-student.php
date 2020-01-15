@@ -7,6 +7,8 @@ $args          = array(
 	'post_type'      => 'student',
 	'posts_per_page' => 4,
 	'paged'          => $paged,
+	'meta_key'       => 'student_status',
+	'meta_value'     => 1,
 );
 $student_query = new WP_Query( $args );
 ?>

@@ -38,11 +38,72 @@ if ( ! class_exists( 'DX_Students' ) ) {
 			add_action( 'pre_get_posts', array( $this, 'dx_students_pre_get_posts' ) );
 			add_action( 'add_meta_boxes', array( $this, 'dx_students_add_meta_boxes' ) );
 			add_action( 'save_post_student', array( $this, 'dx_save_post_student' ) );
+			add_action( 'manage_student_posts_custom_column', array( $this, 'dx_student_active_column' ), 10, 2 );
+			add_action( 'wp_ajax_dx_student_change_status', array( $this, 'dx_student_change_status' ) );
+			add_action( 'wp_insert_post', array( $this, 'dx_wp_insert_post' ) );
 			add_filter( 'post_updated_messages', array( $this, 'student_updated_messages' ) );
 			add_filter( 'single_template', array( $this, 'dx_students_single_template' ) );
 			add_filter( 'template_include', array( $this, 'dx_students_archive_template' ) );
+			add_filter( 'manage_student_posts_columns', array( $this, 'dx_student_manage_columns' ) );
 		}
 
+		/**
+		 * Insert custom meta upon new student.
+		 *
+		 * @param int $post_id the post ID.
+		 */
+		public function dx_wp_insert_post( $post_id ) {
+			if ( 'student' === get_post_type( $post_id ) ) {
+				add_post_meta( $post_id, 'student_status', 1 );
+			}
+		}
+
+		/**
+		 * Change student status.
+		 * This function is called from AJAX request.
+		 */
+		public function dx_student_change_status() {
+			check_ajax_referer( 'dx_student_ajax_nonce', '_nonce' );
+			if ( ! empty( $_POST['student_id'] ) ) {
+				$student_id     = sanitize_text_field( wp_unslash( $_POST['student_id'] ) );
+				$student_status = get_post_meta( $student_id, 'student_status', true );
+				if ( $student_status == 1 ) {
+					update_post_meta( $student_id, 'student_status', 0 );
+				} else {
+					update_post_meta( $student_id, 'student_status', 1 );
+				}
+			}
+		}
+
+		/**
+		 * Content for our custom column.
+		 *
+		 * @param string $column column name.
+		 * @param int $post_id the post id.
+		 */
+		public function dx_student_active_column( $column, $post_id ) {
+			$student_status = get_post_meta( $post_id, 'student_status', true );
+			echo '<label for="dx-student-is-enabled"><input id="dx-student-is-enabled" ' . checked( $student_status, 1, false ) . ' data-student-id="' . $post_id . '" type="checkbox"></label>';
+		}
+
+		/**
+		 * Add new column to Student CPT admin page.
+		 *
+		 * @param array $columns default columns.
+		 *
+		 * @return mixed
+		 */
+		public function dx_student_manage_columns( $columns ) {
+			$columns['student_active'] = 'Enabled';
+
+			return $columns;
+		}
+
+		/**
+		 * Save custom meta boxes to the DB.
+		 *
+		 * @param int $post_id the post ID.
+		 */
 		public function dx_save_post_student( $post_id ) {
 			if ( ! isset( $_POST['dx_students_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['dx_students_meta_box_nonce'], 'dx_students_meta_box' ) ) {
 				return;
@@ -143,11 +204,21 @@ if ( ! class_exists( 'DX_Students' ) ) {
 			wp_enqueue_style( 'jquery-ui-datepicker-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css' );
 			wp_enqueue_script( 'jquery-ui-datepicker' );
 			wp_enqueue_script(
-				'wp-jquery-date-picker',
+				'dx-student-admin-js',
 				DX_STUDENTS_PLUGIN_URL . 'admin/assets/dx-student-admin.js',
 				array( 'jquery', 'jquery-ui-datepicker' ),
 				DX_STUDENTS_VERSION,
 				false
+			);
+
+			$nonce = wp_create_nonce( 'dx_student_ajax_nonce' );
+			wp_localize_script(
+				'dx-student-admin-js',
+				'dx_student_ajax_object',
+				array(
+					'ajax_url'    => admin_url( 'admin-ajax.php' ),
+					'_ajax_nonce' => $nonce,
+				)
 			);
 
 		}
