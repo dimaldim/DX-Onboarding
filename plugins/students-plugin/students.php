@@ -67,10 +67,13 @@ if ( ! class_exists( 'DX_Students' ) ) {
 			?>
 			<div class="wrap dx-students-admin">
 				<label for="dx-student-lives-in"><?php _e( 'Lives In: ', 'dx-students' ); ?></label>
-				<input type="text" id="dx-student-lives-in"
-					   value="<?php esc_attr( $meta_info['student_lives_in'] ); ?>">
+				<input type="text" id="dx-student-lives-in" value="<?php esc_attr( $meta_info['student_lives_in'] ); ?>">
 				<label for="dx-student-address"><?php _e( 'Address: ', 'dx-students' ); ?></label>
 				<input type="text" id="dx-student-address" value="<?php esc_attr( $meta_info['student_address'] ); ?>">
+				<label for="dx-student-birthdate"><?php _e( 'Birth Date: ', 'dx-students' ); ?></label>
+				<input type="text" id="dx-student-birthdate" value="<?php esc_attr( $meta_info['student_birthdate'] ); ?>">
+				<label for="dx-student-class-grade"><?php _e( 'Class / Grade: ', 'dx-students' ); ?></label>
+				<input type="text" id="dx-student-class-grade" value="<?php esc_attr( $meta_info['student_class_grade'] ); ?>">
 			</div>
 			<?php
 		}
