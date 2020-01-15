@@ -40,8 +40,9 @@ if ( ! class_exists( 'DX_Students' ) ) {
 		 * Load plugin dependencies.
 		 */
 		private function load_dependencies() {
-			require_once DX_STUDENTS_PLUGIN_DIR_PATH . '/public/class-dx-student-public.php';
-			require_once DX_STUDENTS_PLUGIN_DIR_PATH . '/admin/class-dx-student-admin.php';
+			require_once DX_STUDENTS_PLUGIN_DIR_PATH . 'public/class-dx-student-public.php';
+			require_once DX_STUDENTS_PLUGIN_DIR_PATH . 'admin/class-dx-student-admin.php';
+			require_once DX_STUDENTS_PLUGIN_DIR_PATH . 'admin/class-dx-student-rest-api.php';
 		}
 
 		/**

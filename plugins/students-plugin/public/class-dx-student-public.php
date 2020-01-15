@@ -24,6 +24,15 @@ if ( ! class_exists( 'DX_Student_Public' ) ) {
 				'',
 				DX_STUDENTS_VERSION
 			);
+			if ( is_active_widget( false, false, 'dx-student-widget', true ) ) {
+				wp_enqueue_script(
+					'dx-student-front-js',
+					DX_STUDENTS_PLUGIN_URL . 'public/assets/dx-student-front.js',
+					array( 'jquery' ),
+					DX_STUDENTS_VERSION,
+					false
+				);
+			}
 		}
 
 		/**
