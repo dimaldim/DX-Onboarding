@@ -54,7 +54,14 @@ if ( ! class_exists( 'DX_Students' ) ) {
 		 */
 		public function dx_student_widget_init() {
 			require_once DX_STUDENTS_PLUGIN_DIR_PATH . '/public/class-dx-student-widget.php';
+
 			register_widget( 'DX_Student_Widget' );
+
+			$sidebar_args = array(
+				'id'   => 'dx-student-sidebar',
+				'name' => __( 'Student sidebar', 'dx-students' ),
+			);
+			register_sidebar( $sidebar_args );
 		}
 
 		/**
