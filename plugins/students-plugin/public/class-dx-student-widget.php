@@ -45,7 +45,7 @@ if ( ! class_exists( 'DX_Student_Widget' ) ) {
 					echo '<li><a href="' . get_the_permalink( $query->post->ID ) . '">' . get_the_title() . '</a></li>';
 				}
 				echo '</ul>';
-				echo '<div id="dx-student-pagination">' . paginate_links() . '</div>';
+				echo '<div id="dx-student-pagination">' . paginate_links( array( 'total' => $query->max_num_pages ) ) . '</div>';
 			} else {
 				echo __( 'No students to display.', 'dx-students' );
 			}
