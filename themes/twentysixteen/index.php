@@ -18,7 +18,11 @@ get_header(); ?>
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
-
+			<?php if ( is_active_sidebar( 'dx-student-sidebar' ) ) { ?>
+				<ul id="sidebar">
+					<?php dynamic_sidebar( 'dx-student-sidebar' ); ?>
+				</ul>
+			<?php } ?>
 		<?php if ( have_posts() ) : ?>
 
 			<?php if ( is_home() && ! is_front_page() ) : ?>

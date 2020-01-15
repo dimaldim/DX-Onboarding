@@ -46,7 +46,16 @@ if ( ! class_exists( 'DX_Students' ) ) {
 			add_filter( 'single_template', array( $this, 'dx_students_single_template' ) );
 			add_filter( 'template_include', array( $this, 'dx_students_archive_template' ) );
 			add_filter( 'manage_student_posts_columns', array( $this, 'dx_student_manage_columns' ) );
+			add_filter( 'the_content', array( $this, 'dx_student_sidebar_in_content' ), 999 );
 			add_shortcode( 'student', array( $this, 'dx_student_shortcode' ) );
+		}
+
+		public function dx_student_sidebar_in_content( $content ) {
+			if ( is_active_sidebar( 'dx-student-sidebar' ) ) {
+				$new_content = '<ul id="sidebar">' . dynamic_sidebar( 'dx-student-sidebar' ) . '</ul>' . $content;
+			}
+
+			return $new_content;
 		}
 
 		/**
@@ -54,7 +63,14 @@ if ( ! class_exists( 'DX_Students' ) ) {
 		 */
 		public function dx_student_widget_init() {
 			require_once DX_STUDENTS_PLUGIN_DIR_PATH . '/public/class-dx-student-widget.php';
+
 			register_widget( 'DX_Student_Widget' );
+
+			$sidebar_args = array(
+				'id'   => 'dx-student-sidebar',
+				'name' => __( 'Student sidebar', 'dx-students' ),
+			);
+			register_sidebar( $sidebar_args );
 		}
 
 		/**
