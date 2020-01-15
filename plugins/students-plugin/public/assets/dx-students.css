@@ -8,4 +8,5 @@
 
 .student-info > span {
 	display: block;
+	max-width: 190px;
 }

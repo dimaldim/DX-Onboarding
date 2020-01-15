@@ -37,9 +37,44 @@ if ( ! class_exists( 'DX_Students' ) ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'dx_students_admin_enqueue_scripts' ) );
 			add_action( 'pre_get_posts', array( $this, 'dx_students_pre_get_posts' ) );
 			add_action( 'add_meta_boxes', array( $this, 'dx_students_add_meta_boxes' ) );
+			add_action( 'save_post_student', array( $this, 'dx_save_post_student' ) );
 			add_filter( 'post_updated_messages', array( $this, 'student_updated_messages' ) );
 			add_filter( 'single_template', array( $this, 'dx_students_single_template' ) );
 			add_filter( 'template_include', array( $this, 'dx_students_archive_template' ) );
+		}
+
+		public function dx_save_post_student( $post_id ) {
+			if ( ! isset( $_POST['dx_students_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['dx_students_meta_box_nonce'], 'dx_students_meta_box' ) ) {
+				return;
+			}
+
+			if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+				return;
+			}
+
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				return;
+			}
+
+			if ( ! empty( $_POST['dx-student-lives-in'] ) ) {
+				$dx_student_lives_in = sanitize_text_field( wp_unslash( $_POST['dx-student-lives-in'] ) );
+				update_post_meta( $post_id, 'student_lives_in', $dx_student_lives_in );
+			}
+
+			if ( ! empty( $_POST['dx-student-address'] ) ) {
+				$dx_student_address = sanitize_text_field( wp_unslash( $_POST['dx-student-address'] ) );
+				update_post_meta( $post_id, 'student_address', $dx_student_address );
+			}
+
+			if ( ! empty( $_POST['dx-student-birthdate'] ) ) {
+				$dx_student_birthdate = sanitize_text_field( wp_unslash( $_POST['dx-student-birthdate'] ) );
+				update_post_meta( $post_id, 'student_birthdate', $dx_student_birthdate );
+			}
+
+			if ( ! empty( $_POST['dx-student-class-grade'] ) ) {
+				$dx_student_class_grade = sanitize_text_field( wp_unslash( $_POST['dx-student-class-grade'] ) );
+				update_post_meta( $post_id, 'student_class_grade', $dx_student_class_grade );
+			}
 		}
 
 		/**
@@ -67,13 +102,17 @@ if ( ! class_exists( 'DX_Students' ) ) {
 			?>
 			<div class="wrap dx-students-admin">
 				<label for="dx-student-lives-in"><?php _e( 'Lives In: ', 'dx-students' ); ?></label>
-				<input type="text" id="dx-student-lives-in" value="<?php esc_attr( $meta_info['student_lives_in'] ); ?>">
+				<input type="text" id="dx-student-lives-in" name="dx-student-lives-in"
+					   value="<?php echo esc_attr( $meta_info['student_lives_in'][0] ); ?>">
 				<label for="dx-student-address"><?php _e( 'Address: ', 'dx-students' ); ?></label>
-				<input type="text" id="dx-student-address" value="<?php esc_attr( $meta_info['student_address'] ); ?>">
+				<input type="text" id="dx-student-address" name="dx-student-address"
+					   value="<?php echo esc_attr( $meta_info['student_address'][0] ); ?>">
 				<label for="dx-student-birthdate"><?php _e( 'Birth Date: ', 'dx-students' ); ?></label>
-				<input type="text" id="dx-student-birthdate" value="<?php esc_attr( $meta_info['student_birthdate'] ); ?>">
+				<input type="text" id="dx-student-birthdate" class="dx-student-datepicker" name="dx-student-birthdate"
+					   value="<?php echo esc_attr( $meta_info['student_birthdate'][0] ); ?>">
 				<label for="dx-student-class-grade"><?php _e( 'Class / Grade: ', 'dx-students' ); ?></label>
-				<input type="text" id="dx-student-class-grade" value="<?php esc_attr( $meta_info['student_class_grade'] ); ?>">
+				<input type="text" id="dx-student-class-grade" name="dx-student-class-grade"
+					   value="<?php echo esc_attr( $meta_info['student_class_grade'][0] ); ?>">
 			</div>
 			<?php
 		}
@@ -101,6 +140,16 @@ if ( ! class_exists( 'DX_Students' ) ) {
 				'',
 				DX_STUDENTS_VERSION
 			);
+			wp_enqueue_style( 'jquery-ui-datepicker-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css' );
+			wp_enqueue_script( 'jquery-ui-datepicker' );
+			wp_enqueue_script(
+				'wp-jquery-date-picker',
+				DX_STUDENTS_PLUGIN_URL . 'admin/assets/dx-student-admin.js',
+				array( 'jquery', 'jquery-ui-datepicker' ),
+				DX_STUDENTS_VERSION,
+				false
+			);
+
 		}
 
 		/**

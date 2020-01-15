@@ -8,6 +8,7 @@ get_header();
 		while ( have_posts() ) :
 			the_post();
 			$enrolled_classes = get_the_category();
+			$student_info     = get_post_meta( get_the_ID() );
 			?>
 			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<header class="entry-header">
@@ -19,10 +20,10 @@ get_header();
 					if ( ! empty( $enrolled_classes ) ) :
 						?>
 						<div class="student-info">
-							<span><b>Lives In:</b></span>
-							<span><b>Address:</b> </span>
-							<span><b>Birth Date:</b></span>
-							<span><b>Class / Grade:</b> </span>
+							<span><b>Lives In:</b> <?php echo esc_attr( $student_info['student_lives_in'][0] ); ?></span>
+							<span><b>Address:</b> <?php echo esc_attr( $student_info['student_address'][0] ); ?></span>
+							<span><b>Birth Date:</b> <?php echo esc_attr( $student_info['student_birthdate'][0] ); ?></span>
+							<span><b>Class / Grade:</b> <?php echo esc_attr( $student_info['student_class_grade'][0] ); ?></span>
 						</div>
 						<div class="dx-student-class-info">
 							<h3>Enrolled classes: </h3>
