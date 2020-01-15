@@ -11,74 +11,37 @@ if ( ! class_exists( 'DX_Student_Rest' ) ) {
 		public function __construct() {
 			add_action( 'rest_api_init', array( $this, 'dx_rest_student_get_all' ) );
 			add_action( 'rest_api_init', array( $this, 'dx_rest_student_get_by_id' ) );
+			add_action( 'rest_api_init', array( $this, 'dx_rest_student_delete' ) );
 		}
 
 		/**
-		 * REST API register custom route to get student by id.
+		 * Register our custom endpoint for the REST API.
+		 * This function register /student/v1/student/delete
 		 */
-		public function dx_rest_student_get_by_id() {
-			register_rest_route(
-				'student/v1',
-				'/student/(?P<id>\d+)',
-				array(
-					'method'   => 'GET',
-					'callback' => array( $this, 'handle_get_student_by_id' ),
-				)
-			);
+		public function dx_rest_student_delete() {
+			require_once DX_STUDENTS_PLUGIN_DIR_PATH . 'admin/rest-api/class-rest-api-delete-student.php';
+			$handle = new DX_Student_Delete();
+			$handle->register_routes();
 		}
 
 		/**
-		 * Handle get student by ID.
-		 *
-		 * @param WP_REST_Request $data data.
-		 *
-		 * @return array|string|void|WP_Post
-		 */
-		public function handle_get_student_by_id( $data ) {
-			if ( ! $data->has_valid_params() ) {
-				return $data->has_valid_params();
-			}
-
-			$student = get_post( (int) $data['id'] );
-
-			if ( empty( $student ) || 'student' !== $student->post_type ) {
-				return __( 'No student found with the provided ID.', 'dx-students' );
-			}
-
-			return $student;
-		}
-
-		/**
-		 * REST API register custom route to get all Students.
+		 * Register our custom endpoint for the REST API.
+		 * This function register /student/v1/student/all
 		 */
 		public function dx_rest_student_get_all() {
-			register_rest_route(
-				'student/v1',
-				'/student/all',
-				array(
-					'method'   => 'GET',
-					'callback' => array( $this, 'handle_get_all_students' ),
-				)
-			);
+			require_once DX_STUDENTS_PLUGIN_DIR_PATH . 'admin/rest-api/class-rest-api-get-all-students.php';
+			$all_students = new DX_Student_All_Students();
+			$all_students->register_routes();
 		}
 
 		/**
-		 * Handle get all students rest call.
-		 *
-		 * @return int[]|WP_Post[]|null
+		 * Register our custom endpoint for the REST API.
+		 * This function register /student/v1/student/<student-id>
 		 */
-		public function handle_get_all_students() {
-			$students = get_posts(
-				array(
-					'post_type' => 'student',
-				)
-			);
-
-			if ( empty( $students ) ) {
-				return null;
-			}
-
-			return $students;
+		public function dx_rest_student_get_by_id() {
+			require_once DX_STUDENTS_PLUGIN_DIR_PATH . 'admin/rest-api/class-rest-api-get-student-by-id.php';
+			$handle = new DX_Student_Get_By_ID();
+			$handle->register_routes();
 		}
 	}
 }
