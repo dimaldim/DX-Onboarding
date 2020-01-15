@@ -33,10 +33,10 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 		 */
 		public function dx_student_sidebar_in_content( $content ) {
 			if ( is_active_sidebar( 'dx-student-sidebar' ) ) {
-				$new_content = '<ul id="sidebar">' . dynamic_sidebar( 'dx-student-sidebar' ) . '</ul>' . $content;
+				$content = '<ul id="sidebar">' . dynamic_sidebar( 'dx-student-sidebar' ) . '</ul>' . $content;
 			}
 
-			return $new_content;
+			return $content;
 		}
 
 		/**
@@ -242,11 +242,10 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 		 * @param WP_Query $query query object.
 		 */
 		public function dx_students_pre_get_posts( $query ) {
-			if ( ! is_admin() && $query->is_main_query() ) {
-				if ( is_post_type_archive( 'student' ) ) {
-					$query->set( 'posts_per_page', 4 );
-				}
+			if ( ! is_admin() && $query->is_main_query() && is_post_type_archive( 'student' ) ) {
+				$query->set( 'posts_per_page', 4 );
 			}
+
 		}
 
 		/**

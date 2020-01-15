@@ -52,8 +52,8 @@ if ( ! class_exists( 'DX_Student_Rest' ) ) {
 		 */
 		public function dx_rest_student_get_all() {
 			require_once DX_STUDENTS_PLUGIN_DIR_PATH . 'admin/rest-api/class-rest-api-get-all-students.php';
-			$all_students = new DX_Student_All_Students();
-			$all_students->register_routes();
+			$handle = new DX_Student_All_Students();
+			$handle->register_routes();
 		}
 
 		/**
