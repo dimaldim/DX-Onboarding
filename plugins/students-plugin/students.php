@@ -34,6 +34,7 @@ if ( ! class_exists( 'DX_Students' ) ) {
 		public function __construct() {
 			add_action( 'init', array( $this, 'student_init' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'dx_students_wp_enqueue_scripts' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'dx_students_admin_enqueue_scripts' ) );
 			add_action( 'pre_get_posts', array( $this, 'dx_students_pre_get_posts' ) );
 			add_action( 'add_meta_boxes', array( $this, 'dx_students_add_meta_boxes' ) );
 			add_filter( 'post_updated_messages', array( $this, 'student_updated_messages' ) );
@@ -64,11 +65,12 @@ if ( ! class_exists( 'DX_Students' ) ) {
 			wp_nonce_field( 'dx_students_meta_box', 'dx_students_meta_box_nonce' );
 			$meta_info = get_post_meta( $post->ID ); // get all post meta information.
 			?>
-			<div class="wrap">
+			<div class="wrap dx-students-admin">
 				<label for="dx-student-lives-in"><?php _e( 'Lives In: ', 'dx-students' ); ?></label>
-				<input type="text" id="dx-student-lives-in" value="<?php esc_attr( $meta_info['student_lives_in'] ); ?>">
-				<label for="dx-student-lives-in"><?php _e( 'Lives In: ', 'dx-students' ); ?></label>
-				<input type="text" id="dx-student-lives-in" value="<?php esc_attr( $meta_info['student_lives_in'] ); ?>">
+				<input type="text" id="dx-student-lives-in"
+					   value="<?php esc_attr( $meta_info['student_lives_in'] ); ?>">
+				<label for="dx-student-address"><?php _e( 'Address: ', 'dx-students' ); ?></label>
+				<input type="text" id="dx-student-address" value="<?php esc_attr( $meta_info['student_address'] ); ?>">
 			</div>
 			<?php
 		}
@@ -87,12 +89,24 @@ if ( ! class_exists( 'DX_Students' ) ) {
 		}
 
 		/**
+		 * Enqueue admin scripts.
+		 */
+		public function dx_students_admin_enqueue_scripts() {
+			wp_enqueue_style(
+				'dx-students-style',
+				DX_STUDENTS_PLUGIN_URL . 'admin/assets/dx-students-admin.css',
+				'',
+				DX_STUDENTS_VERSION
+			);
+		}
+
+		/**
 		 * Enqueue scripts for frontend.
 		 */
 		public function dx_students_wp_enqueue_scripts() {
 			wp_enqueue_style(
 				'dx-students-style',
-				DX_STUDENTS_PLUGIN_URL . '/assets/dx-students.css',
+				DX_STUDENTS_PLUGIN_URL . 'public/assets/dx-students.css',
 				'',
 				DX_STUDENTS_VERSION
 			);
