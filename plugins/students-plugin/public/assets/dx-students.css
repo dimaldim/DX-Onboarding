@@ -10,3 +10,17 @@
 	display: block;
 	max-width: 190px;
 }
+
+.dx-student-shortcode {
+	width: 100%;
+	border: 1px solid red;
+	overflow: hidden;
+}
+
+.dx-student-shortcode .attachment-post-thumbnail {
+	float: left;
+}
+
+.dx-student-shortcode .student-name {
+	display: block;
+}
