@@ -24,3 +24,8 @@
 .dx-student-shortcode .student-name {
 	display: block;
 }
+
+#dx-student-pagination .page-numbers {
+	padding: 5px;
+	border: 1px solid gray;
+}

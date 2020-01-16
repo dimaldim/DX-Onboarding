@@ -43,6 +43,16 @@ class DX_Student_Delete extends WP_REST_Controller {
 	 */
 	public function delete_item( $request ) {
 		$student_id = (int) $request['ID'];
+		/**
+		 * Check for existing student and return an error if it doesn't exist.
+		 */
+		if ( null === get_post( $student_id ) ) {
+			return new WP_Error(
+				'no_student_found',
+				__( 'No student found with the provided ID.', 'dx-students' ),
+				'404'
+			);
+		}
 
 		if ( 'student' === get_post_type( $student_id ) && wp_delete_post( $student_id ) ) {
 			return new WP_REST_Response( __( 'Student deleted!', 'dx-students' ), 200 );

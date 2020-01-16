@@ -33,8 +33,10 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 		 */
 		public function dx_student_sidebar_in_content( $content ) {
 			if ( is_active_sidebar( 'dx-student-sidebar' ) ) {
-				$content = '<ul id="sidebar">' . dynamic_sidebar( 'dx-student-sidebar' ) . '</ul>' . $content;
+				ob_start();
+				dynamic_sidebar( 'dx-student-sidebar' );
 			}
+			$content = ob_get_clean() . $content;
 
 			return $content;
 		}
@@ -72,15 +74,14 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 			$student_id = ! empty( $attr['id'] ) ? (int) $attr['id'] : '';
 
 			if ( ! empty( $student_id ) ) {
-				$query_args     = array(
+				$query_args    = array(
 					'post_type'  => 'student',
 					'p'          => $student_id,
 					'meta_key'   => 'student_status',
 					'meta_value' => 1
 				);
-				$student_query  = new WP_Query( $query_args );
-				$found_students = $student_query->found_posts;
-				if ( 0 === $found_students ) {
+				$student_query = new WP_Query( $query_args );
+				if ( 0 === $student_query->found_posts ) {
 					$html .= __( 'No student found with the provided ID', 'dx-students' );
 				} else {
 					while ( $student_query->have_posts() ) {

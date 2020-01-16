@@ -37,15 +37,28 @@ if ( ! class_exists( 'DX_Student_Widget' ) ) {
 				'meta_value'     => $student_status,
 			);
 			$query        = new WP_Query( $student_args );
-
-			if ( $query->have_posts() ) {
-				echo '<ul id="dx-student-widget">';
-				while ( $query->have_posts() ) {
-					$query->the_post();
-					echo '<li><a href="' . get_the_permalink( $query->post->ID ) . '">' . get_the_title() . '</a></li>';
-				}
-				echo '</ul>';
-				echo '<div id="dx-student-pagination">' . paginate_links( array( 'total' => $query->max_num_pages ) ) . '</div>';
+			if ( $query->have_posts() ) { ?>
+					<ul id="dx-student-list">
+						<?php
+						while ( $query->have_posts() ) :
+							$query->the_post();
+							?>
+							<li>
+								<a href="<?php echo get_the_permalink( $query->post->ID ); ?>"><?php echo get_the_title(); ?></a>
+							</li>
+						<?php endwhile; ?>
+					</ul>
+					<div id="dx-student-pagination">
+						<?php
+						echo paginate_links(
+							array(
+								'base'  => '/%_%',
+								'total' => $query->max_num_pages,
+							)
+						);
+						?>
+					</div>
+				<?php
 			} else {
 				echo __( 'No students to display.', 'dx-students' );
 			}
