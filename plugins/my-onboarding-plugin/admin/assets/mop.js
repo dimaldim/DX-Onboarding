@@ -1,12 +1,19 @@
 /**
  * My onboarding plugin admin JavaScript.
  */
-jQuery( document ).ready(function ( $ ) {
-		$( '#mop-enabled' ).change(
+jQuery(document).ready(function ($) {
+		$('#mop-enabled').change(
 			function () {
 				send_to_wp();
 			}
 		);
+
+		function clear_mop_notices() {
+			let mop_notices = $('.mop-notice');
+			if (mop_notices.length > 0) {
+				mop_notices.remove();
+			}
+		}
 
 		function send_to_wp() {
 			var data = {
@@ -17,10 +24,11 @@ jQuery( document ).ready(function ( $ ) {
 				mop_ajax_object.ajax_url,
 				data,
 				function (response) {
-					let mop_heading = $( '#mop-heading' );
+					let mop_heading = $('#mop-heading');
 					mop_heading.after(
-						function() {
-							return '<div class="updated notice">Onboarding filters updated!</div>';
+						function () {
+							clear_mop_notices();
+							return '<div class="updated notice mop-notice">Onboarding filters updated!</div>';
 						}
 					)
 				}
