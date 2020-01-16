@@ -10,35 +10,15 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'admin_enqueue_scripts', array( $this, 'dx_students_admin_enqueue_scripts' ) );
-			add_action( 'pre_get_posts', array( $this, 'dx_students_pre_get_posts' ) );
 			add_action( 'add_meta_boxes', array( $this, 'dx_students_add_meta_boxes' ) );
 			add_action( 'save_post_student', array( $this, 'dx_save_post_student' ) );
 			add_action( 'manage_student_posts_custom_column', array( $this, 'dx_student_active_column' ), 10, 2 );
+			add_filter( 'manage_student_posts_columns', array( $this, 'dx_student_manage_columns' ) );
 			add_action( 'wp_ajax_dx_student_change_status', array( $this, 'dx_student_change_status' ) );
 			add_action( 'wp_insert_post', array( $this, 'dx_wp_insert_post' ) );
 			add_action( 'widgets_init', array( $this, 'dx_student_widget_init' ) );
 			add_filter( 'post_updated_messages', array( $this, 'student_updated_messages' ) );
-			add_filter( 'manage_student_posts_columns', array( $this, 'dx_student_manage_columns' ) );
-			add_filter( 'the_content', array( $this, 'dx_student_sidebar_in_content' ), 999 );
 			add_shortcode( 'student', array( $this, 'dx_student_shortcode' ) );
-		}
-
-
-		/**
-		 * Add Student sidebar to the content.
-		 *
-		 * @param string $content the content.
-		 *
-		 * @return string
-		 */
-		public function dx_student_sidebar_in_content( $content ) {
-			if ( is_active_sidebar( 'dx-student-sidebar' ) ) {
-				ob_start();
-				dynamic_sidebar( 'dx-student-sidebar' );
-			}
-			$content = ob_get_clean() . $content;
-
-			return $content;
 		}
 
 		/**
@@ -103,7 +83,7 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 		}
 
 		/**
-		 * Insert custom meta upon new student.
+		 * Insert custom meta upon a new student.
 		 *
 		 * @param int $post_id the post ID.
 		 */
@@ -194,7 +174,7 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 		}
 
 		/**
-		 * Add custom meta boxes for Student CPT;
+		 * Add custom meta boxes for Student CPT.
 		 *
 		 * @param WP_Post $post post object.
 		 */
@@ -235,18 +215,6 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 					   value="<?php echo $student_class_grade; ?>">
 			</div>
 			<?php
-		}
-
-		/**
-		 * Limit students per page.
-		 *
-		 * @param WP_Query $query query object.
-		 */
-		public function dx_students_pre_get_posts( $query ) {
-			if ( ! is_admin() && $query->is_main_query() && is_post_type_archive( 'student' ) ) {
-				$query->set( 'posts_per_page', 4 );
-			}
-
 		}
 
 		/**

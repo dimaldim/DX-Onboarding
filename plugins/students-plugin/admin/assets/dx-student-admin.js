@@ -29,7 +29,7 @@ jQuery(document).ready(function($) {
 			data,
 			function (response) {
 				clear_old_notices();
-				$('<div id="dx-student-notice" class="updated notice">Student updated!</div>').insertAfter('.wp-heading-inline');
+				$('<div id="dx-student-notice" class="updated notice">Student updated!</div>').insertAfter('.wp-heading-inline').fadeOut(3000);
 			}
 		);
 	}

@@ -5,7 +5,7 @@ $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 
 $args          = array(
 	'post_type'      => 'student',
-	'posts_per_page' => 4,
+	'posts_per_page' => 2,
 	'paged'          => $paged,
 	'meta_key'       => 'student_status',
 	'meta_value'     => 1,
@@ -14,15 +14,8 @@ $student_query = new WP_Query( $args );
 ?>
 <div id="primary" class="content-area">
 	<main id="main" class="site-main" role="main">
-
 		<?php if ( $student_query->have_posts() ) : ?>
-
-			<header class="page-header">
-				<?php
-				the_archive_title( '<h1 class="page-title">', '</h1>' );
-				?>
-			</header>
-
+			<header class="page-header"><h2><?php _e( 'Students', 'dx-students' ); ?></h2></header>
 			<?php
 			// Start the Loop.
 			while ( $student_query->have_posts() ) :
@@ -49,19 +42,19 @@ $student_query = new WP_Query( $args );
 							)
 						);
 						?>
-					</div><!-- .entry-content -->
+					</div>
 				</article>
-			<?php
-			endwhile;
+				<?php
+			endwhile; // end loop.
 			the_posts_pagination(
 				array(
-					'prev_text'          => __( 'Previous page', 'twentysixteen' ),
-					'next_text'          => __( 'Next page', 'twentysixteen' ),
-					'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'twentysixteen' ) . ' </span>',
+					'prev_text'          => __( 'Previous page', 'dx-students' ),
+					'next_text'          => __( 'Next page', 'dx-students' ),
+					'before_page_number' => '<span class="meta-nav screen-reader-text">' . __( 'Page', 'dx-students' ) . ' </span>',
 				)
 			);
 		else :
-			_e( 'Nothing found so far, sorry' );
+			_e( 'Nothing found so far, sorry', 'dx-students' );
 
 		endif;
 		?>

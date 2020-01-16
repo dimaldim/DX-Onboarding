@@ -10,8 +10,39 @@ if ( ! class_exists( 'DX_Student_Public' ) ) {
 		 */
 		public function __construct() {
 			add_action( 'wp_enqueue_scripts', array( $this, 'dx_students_wp_enqueue_scripts' ) );
+			add_action( 'pre_get_posts', array( $this, 'dx_students_pre_get_posts' ) );
 			add_filter( 'single_template', array( $this, 'dx_students_single_template' ) );
 			add_filter( 'template_include', array( $this, 'dx_students_archive_template' ) );
+			add_filter( 'the_content', array( $this, 'dx_student_sidebar_in_content' ), 999 );
+		}
+
+		/**
+		 * Limit students per page.
+		 *
+		 * @param WP_Query $query query object.
+		 */
+		public function dx_students_pre_get_posts( $query ) {
+			if ( ! is_admin() && $query->is_main_query() && is_post_type_archive( 'student' ) ) {
+				$query->set( 'posts_per_page', 2 );
+			}
+
+		}
+
+		/**
+		 * Add Student sidebar to the content.
+		 *
+		 * @param string $content the content.
+		 *
+		 * @return string
+		 */
+		public function dx_student_sidebar_in_content( $content ) {
+			if ( is_active_sidebar( 'dx-student-sidebar' ) ) {
+				ob_start();
+				dynamic_sidebar( 'dx-student-sidebar' );
+			}
+			$content = ob_get_clean() . $content;
+
+			return $content;
 		}
 
 		/**

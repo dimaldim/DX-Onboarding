@@ -46,7 +46,7 @@ if ( ! class_exists( 'DX_Students' ) ) {
 		}
 
 		/**
-		 * Registers the `student` post type.
+		 * Register the `student` post type.
 		 */
 		public static function student_init() {
 			register_post_type(
