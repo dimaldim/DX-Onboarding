@@ -119,7 +119,7 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 		public function dx_student_change_status() {
 			check_ajax_referer( 'dx_student_ajax_nonce', '_nonce' );
 			if ( ! empty( $_POST['student_id'] ) ) {
-				$student_id     = sanitize_text_field( wp_unslash( $_POST['student_id'] ) );
+				$student_id     = (int) sanitize_text_field( wp_unslash( $_POST['student_id'] ) );
 				$student_status = get_post_meta( $student_id, 'student_status', true );
 				if ( $student_status == 1 ) {
 					update_post_meta( $student_id, 'student_status', 0 );
