@@ -31,6 +31,7 @@ if ( ! class_exists( 'DX_Student_Widget' ) ) {
 
 			$student_args = array(
 				'post_type'      => 'student',
+				'post_status'    => 'publish',
 				'posts_per_page' => $per_page,
 				'paged'          => $paged,
 				'meta_key'       => 'student_status',

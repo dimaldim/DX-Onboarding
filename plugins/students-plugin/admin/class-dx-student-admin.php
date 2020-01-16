@@ -44,39 +44,50 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 		 * @return string
 		 */
 		public function dx_student_shortcode( $atts ) {
-			$html       = '<div class="dx-student-shortcode">';
-			$attr       = shortcode_atts(
+			$attr = shortcode_atts(
 				array(
 					'id' => null,
 				),
 				$atts
 			);
-			$student_id = ! empty( $attr['id'] ) ? (int) $attr['id'] : '';
 
-			if ( ! empty( $student_id ) ) {
-				$query_args    = array(
-					'post_type'  => 'student',
-					'p'          => $student_id,
-					'meta_key'   => 'student_status',
-					'meta_value' => 1
-				);
-				$student_query = new WP_Query( $query_args );
-				if ( 0 === $student_query->found_posts ) {
-					$html .= __( 'No student found with the provided ID', 'dx-students' );
-				} else {
-					while ( $student_query->have_posts() ) {
-						$student_query->the_post();
-						/* translators: %s Student Class / Grade */
-						$student_class = sprintf( __( 'Class / Grade: %s', 'dx-students' ), 'test' );
-						$html          .= get_the_post_thumbnail();
-						$html          .= '<span class="student-name">' . get_the_title() . '</span>';
-						$html          .= '<span class="student-class">' . $student_class . '</span>';
-					}
-					wp_reset_postdata();
-				}
-			} else {
+			$student_id = ! empty( $attr['id'] ) ? (int) $attr['id'] : '';
+			$html       = '<div class="dx-student-shortcode">';
+
+			if ( empty( $student_id ) ) {
 				$html .= __( 'Please provide student ID.', 'dx-students' );
+				$html .= '</div>';
+
+				return $html;
 			}
+			$query_args    = array(
+				'post_type'   => 'student',
+				'post_status' => 'publish',
+				'p'           => $student_id,
+				'meta_key'    => 'student_status',
+				'meta_value'  => 1
+			);
+			$student_query = new WP_Query( $query_args );
+
+			if ( ! $student_query->have_posts() ) {
+				$html .= __( 'No student found with the provided ID', 'dx-students' );
+				$html .= '</div>';
+
+				return $html;
+			}
+
+			// Do the loop and display student info.
+			while ( $student_query->have_posts() ) {
+				$student_query->the_post();
+				/* translators: %s Student Class / Grade */
+				$student_class = sprintf( __( 'Class / Grade: %s', 'dx-students' ), 'test' );
+				$html         .= get_the_post_thumbnail();
+				$html         .= '<span class="student-name">' . get_the_title() . '</span>';
+				$html         .= '<span class="student-class">' . $student_class . '</span>';
+			}
+			// End loop.
+			wp_reset_postdata();
+
 			$html .= '</div>';
 
 			return $html;
@@ -118,7 +129,7 @@ if ( ! class_exists( 'DX_Student_admin' ) ) {
 		 */
 		public function dx_student_active_column( $column, $post_id ) {
 			$student_status = get_post_meta( $post_id, 'student_status', true );
-			echo '<label for="dx-student-is-enabled"><input id="dx-student-is-enabled" ' . checked( $student_status, 1, false ) . ' data-student-id="' . $post_id . '" type="checkbox"></label>';
+			echo '<label for="dx-student-is-enabled"><input id="dx-student-is-enabled-' . $post_id . '" class="dx-student-status" ' . checked( $student_status, 1, false ) . ' data-student-id="' . $post_id . '" type="checkbox"></label>';
 		}
 
 		/**

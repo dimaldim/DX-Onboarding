@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
 			let widget_content = widget.find('#dx-student-list');
 			let widget_pagination = widget.find('#dx-student-pagination');
 			let widget_parent = widget.parent()[0].localName;
-			widget_content.html('<img src="/wp-content/plugins/students-plugin/public/assets/ajax-loader.gif">');
+			widget_content.html('<img alt="loading.." src="/wp-content/plugins/students-plugin/public/assets/ajax-loader.gif">');
 			widget_content.load(link + ' ' + widget_parent + ' > #' + widget_id + ' > #dx-student-list > *');
 			widget_pagination.html('');
 			widget_pagination.load(link + ' ' + widget_parent + ' > #' + widget_id + ' > #dx-student-pagination > *');

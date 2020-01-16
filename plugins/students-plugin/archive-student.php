@@ -5,6 +5,7 @@ $paged = ( get_query_var( 'paged' ) ) ? get_query_var( 'paged' ) : 1;
 
 $args          = array(
 	'post_type'      => 'student',
+	'post_status'    => 'publish',
 	'posts_per_page' => 2,
 	'paged'          => $paged,
 	'meta_key'       => 'student_status',
@@ -44,7 +45,7 @@ $student_query = new WP_Query( $args );
 						?>
 					</div>
 				</article>
-				<?php
+			<?php
 			endwhile; // end loop.
 			the_posts_pagination(
 				array(
