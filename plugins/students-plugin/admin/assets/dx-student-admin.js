@@ -22,6 +22,7 @@ jQuery( document ).ready( ( $ ) => {
 				$( '<div id="dx-student-notice" class="updated notice">Student updated!</div>' )
 					.insertAfter( '.wp-heading-inline' )
 					.fadeOut( 3000 );
+				$( '<div id="dx-student-notice" class="updated notice">Student updated!</div>' ).insertAfter( '.wp-heading-inline' ).fadeOut( 3000 );
 			}
 		);
 	}
